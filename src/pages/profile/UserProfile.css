@@ -1,0 +1,81 @@
+/* General container styling */
+.p-4 {
+  padding: 1rem;
+}
+
+.text-2xl {
+  font-size: 1rem; /* Adjust font size */
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Styling for the User Profile container */
+.user-profile-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(119, 119, 119, 0.1);
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Headings */
+.user-profile-container h1 {
+  color: #333;
+  border-bottom: 2px solid #959595;
+  padding-bottom: 0.5rem;
+}
+
+/* Labels */
+.user-profile-container strong {
+  color: #323232;
+}
+
+.delete-account-btn {
+  margin-top: 30px;
+  border-radius: 24px;
+  width: 150px;
+  background-color: #d9534f;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-account-btn:hover {
+  background-color: #c9302c;
+}
+
+.error-message {
+  color: red;
+  font-size: 1rem;
+  margin-top: 1rem;
+  background-color: #ffe5e5;
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .user-profile-container {
+    padding: 1rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+}

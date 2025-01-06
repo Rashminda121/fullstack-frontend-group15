@@ -1,0 +1,35 @@
+/*
+ * Project Name: Salt & Pepper
+ * Group: Group 15
+ * University: University of Plymouth
+ * Course: BSc (Hons) Software Engineering
+ * Author(s): Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera
+ *
+ * Copyright (c) 2024 [Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera]. All rights reserved.
+ *
+ * This code is the property of the authors and may not be reproduced, distributed, or
+ * used without permission from the copyright holder(s).
+ */
+
+.verify {
+  min-height: 60vh;
+  display: grid;
+}
+.verify .spinner {
+  width: 50px;
+  height: 50px;
+  place-self: center;
+  border: 6px solid rgba(189, 189, 189, 0.5);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: rotate 1s linear infinite;
+  transition: border-color 0.3s ease-in-out;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

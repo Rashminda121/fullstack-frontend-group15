@@ -1,0 +1,182 @@
+/*
+ * Project Name: Salt & Pepper
+ * Group: Group 15
+ * University: University of Plymouth
+ * Course: BSc (Hons) Software Engineering
+ * Author(s): Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera
+ *
+ * Copyright (c) 2024 [Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera]. All rights reserved.
+ *
+ * This code is the property of the authors and may not be reproduced, distributed, or
+ * used without permission from the copyright holder(s).
+ */
+
+/* Container for the entire About Us page */
+.about-us-container {
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Title styling */
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+/* Slogan under the title */
+.title-slogan {
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Paragraph styling */
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Section styling */
+section {
+  margin: 30px 0;
+}
+
+/* Section header styling */
+.about-us-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 36px;
+  color: #4b4b4b;
+  margin-top: 24px;
+}
+
+/* Decorative line under section headers */
+.about-us-container h2::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to left, white, black);
+  margin-top: 5px;
+}
+
+/* Unordered list styling */
+.ul-styles {
+  list-style-type: disc;
+  margin-left: 20px;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* List item styling */
+ul li {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Footer styling */
+footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Additional footer text styling */
+footer p {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+/* Image styling within sections */
+.section-image {
+  width: 50%;
+  border-radius: 10px;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Mission section layout */
+.mission-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Mission section text content */
+.mission-section .text-content {
+  flex: 2;
+}
+
+/* Mission section image */
+.mission-section .section-image {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Plans section layout */
+.plans-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Plans section text content */
+.plans-section .text-content {
+  flex: 2;
+}
+
+/* Plans section image */
+.plans-section .section-image {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Team section layout */
+.team-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Mini image styling within team section */
+.section-image-mini {
+  max-width: auto;
+  height: 250px;
+  border-radius: 10px;
+}
+
+/* Logo */
+.logo-image {
+  max-width: auto;
+  height: 250px;
+  border-radius: 10px;
+  align-items: flex-end;
+}
+
+/* Team members container */
+.team-members {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+/* Individual team member styling */
+.team-member {
+  font-size: 16px;
+  font-weight: bold;
+}

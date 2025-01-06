@@ -1,0 +1,102 @@
+/*
+ * Project Name: Salt & Pepper
+ * Group: Group 15
+ * University: University of Plymouth
+ * Course: BSc (Hons) Software Engineering
+ * Author(s): Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera
+ *
+ * Copyright (c) 2024 [Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera]. All rights reserved.
+ *
+ * This code is the property of the authors and may not be reproduced, distributed, or
+ * used without permission from the copyright holder(s).
+ */
+
+/* Container for the entire search section */
+.food-search-container {
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Title of the search section */
+.search-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Search input and button container */
+.search-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Styling the search input */
+.search-input {
+  padding: 10px;
+  font-size: 1rem;
+  width: 300px;
+  border-radius: 24px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+/* Styling the search button */
+.search-button {
+  padding: 10px 15px;
+  background-color: #000000;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  width: 100px;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #218838;
+}
+
+/* Error message styling */
+.error-message {
+  color: #d9534f;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* Food items list styling */
+.food-items-list {
+  margin-top: 20px;
+}
+
+.food-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+}
+
+/* Food item name */
+.food-name {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Styling when no food items are found */
+.food-items-list p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+}

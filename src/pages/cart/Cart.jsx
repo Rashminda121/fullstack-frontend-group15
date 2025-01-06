@@ -1,0 +1,105 @@
+/*
+ * Project Name: Salt & Pepper
+ * Group: Group 15
+ * University: University of Plymouth
+ * Course: BSc (Hons) Software Engineering
+ * Author(s): Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera
+ *
+ * Copyright (c) 2024 [Amarathunga Ruwanthie, Jayamuni Rashminda, Onaliy Jayawardana, Gihan Wipulaguna, Hapuarachchige Hapuarachchi, Waniga Perera]. All rights reserved.
+ *
+ * This code is the property of the authors and may not be reproduced, distributed, or
+ * used without permission from the copyright holder(s).
+ */
+
+//--------------------React Imports-------------------------
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+//--------------------App Imports-------------------------
+import { StoreContext } from "../../context/StoreContext";
+import "./Cart.css";
+
+const Cart = () => {
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } =
+    useContext(StoreContext);
+
+  const navigate = useNavigate();
+
+  return (
+    <div className="cart">
+      <div className="cart-items">
+        <div className="cart-items-title">
+          <p>Items</p>
+          <p>Title</p>
+          <p>Price</p>
+          <p>Quantity</p>
+          <p>Total</p>
+          <p>Remove</p>
+        </div>
+        <br />
+        <hr />
+        {food_list.map((item, index) => {
+          if (cartItems[item._id] > 0) {
+            return (
+              <div>
+                <div className="cart-items-title cart-items-item">
+                  <img
+                    src={item.image}
+                    alt="item.name"
+                    className="max-w-12 mr-2"
+                  />
+                  <p className="mr-2">{item.name}</p>
+                  <p>{item.price} LKR</p>
+                  <p>{cartItems[item._id]}</p>
+                  <p>{item.price * cartItems[item._id]} LKR</p>
+                  <p onClick={() => removeFromCart(item._id)} className="cross">
+                    x
+                  </p>
+                </div>
+                <hr />
+              </div>
+            );
+          }
+        })}
+      </div>
+      <div className="cart-bottom">
+        <div className="cart-total">
+          <h2>Your Order</h2>
+          <div>
+            <div className="cart-total-details">
+              <p>Subtotal</p>
+              <p>{getTotalCartAmount()} LKR</p>
+            </div>
+            <hr />
+            <div className="cart-total-details">
+              <p>Delivery Fee</p>
+              <p>{getTotalCartAmount() === 0 ? 0 : 200} LKR</p>
+            </div>
+            <hr />
+            <div className="cart-total-details">
+              <p>Total</p>
+              <p>
+                {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 200}{" "}
+                LKR
+              </p>
+            </div>
+          </div>
+          <button onClick={() => navigate("/order")}>
+            PROCEED TO CHECKOUT
+          </button>
+        </div>
+        <div className="cart-promocode">
+          <div>
+            <p>If you have a promo code, Enter it here</p>
+            <div className="cart-promocode-input">
+              <input type="text" placeholder="  #23fhjb38" />
+              <button>Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Cart;
