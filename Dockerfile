@@ -27,6 +27,9 @@ WORKDIR /usr/share/nginx/html
 
 COPY --from=build /usr/src/frontend/dist .
 
+# Copy the custom Nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Expose port 80 for the frontend
 EXPOSE 80
 
