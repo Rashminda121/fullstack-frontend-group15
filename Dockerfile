@@ -13,8 +13,20 @@ RUN npm ci
 # Copy the rest of the frontend code to the container
 COPY . .
 
-# Expose port 5173 for the frontend
-EXPOSE 5173
+RUN npm run build
 
+FROM nginx:1.10
+
+WORKDIR /usr/share/nginx/html
+
+RUN rm -rf *
+
+COPY --from=build /usr/src/frontend/build .
+
+# Expose port 80 for the frontend
+EXPOSE 80
+
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
 CMD ["npm", "run", "dev"]
+
