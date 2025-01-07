@@ -28,4 +28,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f frontendContainer || true
       - name: Run docker container
-        run: docker run -d -p 5176:80 --name frontendContainer felixjayamuni/frontendrepo
+        run: docker run -d -p 5173:80 --name frontendContainer felixjayamuni/frontendrepo

@@ -19,7 +19,7 @@ FROM nginx:1.10
 
 WORKDIR /usr/share/nginx/html
 
-RUN rm -rf *
+# RUN rm -rf *
 
 COPY --from=build /usr/src/frontend/dist .
 
@@ -28,5 +28,5 @@ EXPOSE 80
 
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]
 
