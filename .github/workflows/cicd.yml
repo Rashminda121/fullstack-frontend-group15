@@ -37,7 +37,7 @@ jobs:
       - name: Delete old container
         run: docker rm -f frontendContainer || true
       - name: Run docker container
-        run: docker run -d -p 5173:80 --name frontendContainer -v $GITHUB_WORKSPACE/nginx.conf:/etc/nginx/nginx.conf felixjayamuni/frontendrepo
+        run: docker run -d -p 5173:80 --name frontendContainer -v ~/nginx.conf:/etc/nginx/nginx.conf felixjayamuni/frontendrepo:latest
 
       # - name: Run docker container
       #   run: docker run -d -p 5173:80 --name frontendContainer felixjayamuni/frontendrepo
