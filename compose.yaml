@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+    working_dir: /usr/src/frontend
+    command: ["sh", "-c", "./startup.sh"]

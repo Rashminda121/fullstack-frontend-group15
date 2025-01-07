@@ -1,3 +1,4 @@
+
 cd /usr/src/frontend
-npm install
+npm ci
 npm run dev
