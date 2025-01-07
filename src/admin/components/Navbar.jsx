@@ -23,7 +23,7 @@ const NavbarAdmin = () => {
 
   const menuItems = [
     { name: "Home", path: "/admin" },
-    { name: "Items", path: "/admin/itemsPage" },
+    { name: "Items", path: "/src/admin/pages/Items.jsx" },
     { name: "Categories", path: "/admin/categoriesPage" },
     { name: "Orders", path: "/admin/ordersPage" },
     { name: "Offers", path: "/admin/offersPage" },
