@@ -21,7 +21,7 @@ WORKDIR /usr/share/nginx/html
 
 RUN rm -rf *
 
-COPY --from=build /usr/src/frontend/build .
+COPY --from=build /src/build .
 
 # Expose port 80 for the frontend
 EXPOSE 80
