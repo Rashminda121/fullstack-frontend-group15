@@ -16,7 +16,7 @@ import React, { useEffect, useState } from "react";
 import "./ExploreMenu.css";
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+  import.meta.env.VITE_BACKEND_URL || "http://13.229.205.154:4000";
 
 const ExploreMenu = ({ category, setCategory }) => {
   const [categoryDataList, setCategoryDataList] = useState([]);

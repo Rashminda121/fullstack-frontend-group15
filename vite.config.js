@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       "/socket.io": {
         // Match the path prefix of your socket.io requests
-        target: "http://localhost:4000",
+        target: "http://13.229.205.154:4000",
         ws: true, // Important for WebSockets
       },
     },

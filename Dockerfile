@@ -10,6 +10,10 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
+# Copy the environment file (if needed for the build process)
+ARG ENV_FILE=.env
+COPY $ENV_FILE .env
+
 # Copy the rest of the frontend code to the container
 COPY . .
 

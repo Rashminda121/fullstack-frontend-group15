@@ -12,10 +12,18 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
+
+      - name: Add .env file
+        run: |
+          touch .env
+          echo "${{ secrets.FRONTEND_ENV }}" > .env
+
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker Image
-        run: docker build -t felixjayamuni/frontendrepo .
+        run: docker build --build-arg ENV_FILE=.env -t felixjayamuni/frontendrepo .
+
       - name: Publish image to docker hub
         run: docker push felixjayamuni/frontendrepo:latest
 
@@ -25,7 +33,9 @@ jobs:
     steps:
       - name: Pull image from docker hub
         run: docker pull felixjayamuni/frontendrepo:latest
+
       - name: Delete old container
         run: docker rm -f frontendContainer || true
+
       - name: Run docker container
         run: docker run -d -p 5173:80 --name frontendContainer felixjayamuni/frontendrepo

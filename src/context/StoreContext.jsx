@@ -20,7 +20,7 @@ export const StoreContext = createContext(initialCartState);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "http://localhost:4000";
+  const url = "http://13.229.205.154:4000";
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
 

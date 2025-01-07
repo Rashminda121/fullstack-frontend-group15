@@ -19,7 +19,7 @@ import AdminLayout from "../layout";
 import convertToBase64 from "./../functions/imageConvert";
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+  import.meta.env.VITE_BACKEND_URL || "http://13.229.205.154:4000";
 
 const ItemsPage = () => {
   //list data
