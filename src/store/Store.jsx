@@ -18,49 +18,39 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://13.229.205.154:4000/";
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/";
 
 const StorePage = () => {
   const [dataList, setDataList] = useState([]);
-  const [token, setToken] = useState("");
-  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
-    }
-
-    if (!token) return;
-
-    const fetchUserData = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const decoded = jwtDecode(token);
-
-        // Fetch profile
-        const profileResponse = await axios.get(
-          `/api/user/profile/${decoded.id}`,
-          {
-            headers: { token },
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/api/store/dashboardCount", {
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            token: token 
           }
-        );
-        setProfile(profileResponse.data);
-        getData(profile.id);
+        });
+        
+        if (response.data.success) {
+          setDataList(response.data.data);
+        }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        setError(error.response?.data?.message || "Error fetching data");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUserData();
-  }, [token, profile]);
+    fetchDashboardData();
+  }, []);
 
-  const getData = async (userId) => {
-    const data = await axios.get("/api/store/dashboardCount", {
-      params: { id: userId },
-    });
-    if (data.data.success) {
-      setDataList(data.data.data);
-    }
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <StoreLayout>

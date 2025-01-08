@@ -38,6 +38,8 @@ import StorePage from "./store/Store";
 import Chats from "./store/pages/Chats";
 import Orders from "./store/pages/Orders";
 import RequestsPage from "./admin/pages/Requests";
+import Items from "./store/pages/Items";
+import Offers from "./store/pages/Offers";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -114,6 +116,8 @@ const App = () => {
           <Route path="/store/orders" element={<Orders />} />
           <Route path="/food-search" element={<FoodSearch />} />
           <Route path="/food-item/:id" element={<FoodItemForSearch />} />
+          <Route path="/store/items" element={<Items />} />
+          <Route path="/store/offers" element={<Offers />} />
         </Routes>
       </div>
       <Footer />

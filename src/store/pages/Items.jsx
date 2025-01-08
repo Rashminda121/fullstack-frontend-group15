@@ -11,38 +11,80 @@
  * used without permission from the copyright holder(s).
  */
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+//--------------------React Imports-------------------------
+import { useEffect, useState, useContext } from "react";
+
+//--------------------App Imports-------------------------
 import FormItems from "../components/FormItem";
-import AdminLayout from "../layout";
-import convertToBase64 from "./../functions/imageConvert";
+import StoreLayout from "../Layout";
+import convertToBase64 from "../../admin/functions/imageConvert";
+import { StoreContext } from "../../context/StoreContext";
+
+//--------------------Other Imports-------------------------
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 axios.defaults.baseURL =
   import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
-const ItemsPage = () => {
-  //list data
+const Items = () => {
   const [dataList, setDataList] = useState([]);
   const [storeDataList, setStoreDataList] = useState([]);
   const [categoryDataList, setCategoryDataList] = useState([]);
+  const [userRole, setUserRole] = useState("admin");
+  const [userStore, setUserStore] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { token } = useContext(StoreContext);
 
+  // Fetch user-specific data
   useEffect(() => {
-    getData();
-    getSelectionData();
-  }, []);
+    if (token) {
+      const decoded = jwtDecode(token);
 
+      // Fetch store email
+      axios
+        .get(`/api/user/email/${decoded.id}`, { headers: { token } })
+        .then((response) => {
+          setUserStore(response.data.email);
+        })
+        .catch((error) => console.error("Error fetching store email:", error));
+
+      // Fetch user role
+      axios
+        .get(`/api/user/role/${decoded.id}`, { headers: { token } })
+        .then((response) => {
+          setUserRole(response.data.role);
+        })
+        .catch((error) => console.error("Error fetching user role:", error));
+    }
+  }, [token]);
+
+  // Fetch items when userStore is available
+  useEffect(() => {
+    if (userStore) {
+      getData();
+    }
+  }, [userStore]);
+
+  // Fetch items
   const getData = async () => {
     try {
+      setLoading(true);
       const data = await axios.get("/api/admin/listItems");
       if (data.data.success) {
-        setDataList(data.data.data);
+        const filteredData = data.data.data.filter(
+          (item) => item.store === userStore
+        );
+        setDataList(filteredData);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Fetch additional selection data
   const getSelectionData = async () => {
     try {
       const storeData = await axios.get("/api/admin/listStoreUsers");
@@ -59,19 +101,16 @@ const ItemsPage = () => {
     }
   };
 
-  // form's visibility
+  useEffect(() => {
+    getSelectionData();
+  }, []);
+
   const [isOpen, setIsOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const toggleForm = () => {
     setIsOpen((prev) => !prev);
-    clearEditFormData();
-  };
-  const toggleEditForm = () => {
-    setIsEditOpen((prev) => !prev);
   };
 
-  //form data
   const [formData, setFormData] = useState({
     name: "",
     store: "",
@@ -81,37 +120,12 @@ const ItemsPage = () => {
     image: "",
   });
 
-  const [editFormData, setEditFormData] = useState({
-    _id: "",
-    name: "",
-    store: "",
-    description: "",
-    price: 0,
-    category: "",
-    image: "",
-  });
-
-  const clearFormData = () => {
-    setFormData({
-      name: "",
-      store: "",
-      description: "",
-      price: 0,
-      category: "",
-      image: "",
-    });
-  };
-
-  const clearEditFormData = () => {
-    setEditFormData({
-      name: "",
-      store: "",
-      description: "",
-      price: 0,
-      category: "",
-      image: "",
-    });
-  };
+  // Auto-fill store for store owners
+  useEffect(() => {
+    if (userRole === "store") {
+      setFormData((prev) => ({ ...prev, store: userStore }));
+    }
+  }, [userRole, userStore]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -130,7 +144,14 @@ const ItemsPage = () => {
           toggleForm();
           getData();
           alert(data.data.message);
-          clearFormData();
+          setFormData({
+            name: "",
+            store: userRole === "storeOwner" ? userStore : "",
+            description: "",
+            price: 0,
+            category: "",
+            image: "",
+          });
         } else {
           alert(data.data.message);
         }
@@ -172,97 +193,8 @@ const ItemsPage = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const isConfirmed = window.confirm(
-        "Are you sure you want to delete this item...!"
-      );
-
-      if (!isConfirmed) {
-        return;
-      }
-
-      const data = await axios.delete("/api/admin/removeItem", {
-        data: { _id: id },
-      });
-
-      if (data.data.success) {
-        getData();
-        alert(data.data.message);
-      } else {
-        alert(data.data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    if (
-      Object.values(editFormData).some(
-        (value) => value === "" || value === null || value === undefined
-      )
-    ) {
-      alert("Data is missing...!");
-    } else {
-      try {
-        const data = await axios.put("/api/admin/updateItem", editFormData);
-
-        if (data.data.success) {
-          getData();
-          toggleEditForm();
-          alert(data.data.message);
-          clearEditFormData();
-        } else {
-          alert(data.data.message);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const handleEditOnChange = async (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === "image" && files && files[0]) {
-      try {
-        const file = files[0];
-
-        const maxSize = 5 * 1024 * 1024;
-
-        if (file.size > maxSize) {
-          alert("File size exceeds 5MB. Please select a smaller image.");
-          e.target.value = null;
-          return;
-        }
-
-        const base64 = await convertToBase64(file);
-
-        setEditFormData((prev) => ({
-          ...prev,
-          [name]: base64,
-        }));
-      } catch (error) {
-        console.error("Error converting image to base64:", error);
-      }
-    } else {
-      setEditFormData((prev) => ({
-        ...prev,
-        [name]: name === "price" ? Number(value) : value,
-      }));
-    }
-  };
-
-  const handleEdit = (e) => {
-    setEditFormData(e);
-    toggleEditForm();
-  };
-
   return (
-    <AdminLayout>
+    <StoreLayout>
       {isOpen && (
         <FormItems
           handleSubmit={handleSubmit}
@@ -271,16 +203,7 @@ const ItemsPage = () => {
           storeDataList={storeDataList}
           categoryDataList={categoryDataList}
           formData={formData}
-        />
-      )}
-      {isEditOpen && (
-        <FormItems
-          handleSubmit={handleUpdate}
-          handleOnChange={handleEditOnChange}
-          toggleForm={toggleEditForm}
-          storeDataList={storeDataList}
-          categoryDataList={categoryDataList}
-          formData={editFormData}
+          userRole={userRole}
         />
       )}
 
@@ -317,65 +240,60 @@ const ItemsPage = () => {
                 <th className="py-2 px-4 text-sm font-semibold text-gray-600 text-left">
                   Category
                 </th>
-                <th className="py-2 px-4 text-sm font-semibold text-gray-600 text-left">
-                  Options
-                </th>
               </tr>
             </thead>
             <tbody>
-              {dataList[0] ? (
-                dataList.map((e) => (
+              {loading ? (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="py-3 px-4 text-center text-gray-700"
+                  >
+                    Loading items...
+                  </td>
+                </tr>
+              ) : dataList.length > 0 ? (
+                dataList.map((item) => (
                   <tr
-                    key={e._id}
+                    key={item._id}
                     className="border-t border-gray-200 hover:bg-gray-50 transition"
                   >
                     <td className="py-3 px-4 text-sm text-gray-700">
-                      {e.name}
+                      {item.name}
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-700">
-                      {e.store}
+                      {item.store}
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-700">
                       <textarea
                         rows={2}
-                        value={e.description}
+                        value={item.description}
                         readOnly
-                        className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                        className="w-full p-1 border border-gray-300 rounded-md"
                       ></textarea>
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-700">
-                      Rs.{e.price}
+                      Rs.{item.price}
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-700">
                       <img
-                        src={e.image}
-                        alt={e.name}
-                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                        src={item.image}
+                        alt={item.name}
+                        className="w-10 h-10 rounded-full object-cover"
                       />
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-700">
-                      {e.category}
-                    </td>
-                    <td className="py-6 px-4 text-sm text-gray-700 flex space-x-3">
-                      <button
-                        onClick={() => handleEdit(e)}
-                        className="p-2 text-gray-500 hover:text-white hover:bg-gray-600  transition rounded-md"
-                      >
-                        <MdEdit size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(e._id)}
-                        className="p-2 text-red-500 hover:text-white hover:bg-red-600 transition rounded-md"
-                      >
-                        <MdDelete size={18} />
-                      </button>
+                      {item.category}
                     </td>
                   </tr>
                 ))
               ) : (
-                <tr className="border-t border-gray-200 hover:bg-gray-50 transition">
-                  <td className="py-3 px-4 text-sm text-gray-700">
-                    No data available...!
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="py-3 px-4 text-center text-gray-700"
+                  >
+                    No items available for your store.
                   </td>
                 </tr>
               )}
@@ -383,8 +301,8 @@ const ItemsPage = () => {
           </table>
         </div>
       </div>
-    </AdminLayout>
+    </StoreLayout>
   );
 };
 
-export default ItemsPage;
+export default Items;

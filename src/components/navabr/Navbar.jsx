@@ -18,7 +18,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 
-import { FaRegCommentDots, FaUserCircle } from "react-icons/fa";
+import {
+  FaRegCommentDots,
+  FaStore,
+  FaUser,
+  FaUserCircle,
+} from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = ({ setShowLogin, setCurrentUser, currentUser }) => {
@@ -79,11 +84,11 @@ const Navbar = ({ setShowLogin, setCurrentUser, currentUser }) => {
           Offers
         </a>
         <a
-          href="footer"
-          onClick={() => setMenu("Contact-Us")}
-          className={menu === "Contact-Us" ? "active" : ""}
+          href="/about"
+          onClick={() => setMenu("about")}
+          className={menu === "about" ? "active" : ""}
         >
-          Contact Us
+          About Us
         </a>
         {role === "admin" && (
           <Link to="/admin" className="navbar-link">
@@ -136,6 +141,18 @@ const Navbar = ({ setShowLogin, setCurrentUser, currentUser }) => {
                 <FaRegCommentDots className="profile_bag" size={18} />
                 <p>Reviews</p>
               </li>
+              {role === "admin" && (
+                <li onClick={() => navigate("/admin")}>
+                  <FaUser className="profile_bag" size={18} />
+                  <p>Admin</p>
+                </li>
+              )}
+              {role === "store" && (
+                <li onClick={() => navigate("/store")}>
+                  <FaStore className="profile_bag" size={18} />
+                  <p>Store</p>
+                </li>
+              )}
               <hr />
               <li onClick={logout}>
                 <img className="profile_img" src={assets.logout_icon} alt="" />

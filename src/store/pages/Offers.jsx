@@ -11,30 +11,68 @@
  * used without permission from the copyright holder(s).
  */
 
-import AdminLayout from "./../layout";
+//--------------------React Imports-------------------------
+import { useEffect, useState, useContext } from "react";
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
+//--------------------App Imports-------------------------
+import StoreLayout from "../Layout";
 import FormOffer from "../components/FormOffers";
-import convertToBase64 from "./../functions/imageConvert";
+import convertToBase64 from "../../admin/functions/imageConvert";
+import { StoreContext } from "../../context/StoreContext";
+
+//--------------------Other Imports-------------------------
+import axios from "axios";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { jwtDecode } from "jwt-decode";
 
 axios.defaults.baseURL =
   import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/";
 
-const OffersPage = () => {
+const Offers = () => {
   const [dataList, setDataList] = useState([]);
   const [storeDataList, setStoreDataList] = useState([]);
+  const [userRole, setUserRole] = useState("admin");
+  const [userStore, setUserStore] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { token } = useContext(StoreContext);
 
+  // Fetch user-specific data
   useEffect(() => {
-    getData();
-    getSelectionData();
-  }, []);
+    if (token) {
+      const decoded = jwtDecode(token);
+
+      // Fetch store email
+      axios
+        .get(`/api/user/email/${decoded.id}`, { headers: { token } })
+        .then((response) => {
+          setUserStore(response.data.email);
+        })
+        .catch((error) => console.error("Error fetching store email:", error));
+
+      // Fetch user role
+      axios
+        .get(`/api/user/role/${decoded.id}`, { headers: { token } })
+        .then((response) => {
+          setUserRole(response.data.role);
+        })
+        .catch((error) => console.error("Error fetching user role:", error));
+    }
+  }, [token]);
+
+  // Fetch items when userStore is available
+  useEffect(() => {
+    if (userStore) {
+      getData();
+    }
+  }, [userStore]);
 
   const getData = async () => {
     const data = await axios.get("/api/admin/listOffers");
     if (data.data.success) {
-      setDataList(data.data.data);
+      const filteredData = data.data.data.filter(
+        (item) => item.store === userStore
+      );
+      setDataList(filteredData);
     }
   };
 
@@ -48,6 +86,10 @@ const OffersPage = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getSelectionData();
+  }, []);
 
   // form's visibility
   const [isOpen, setIsOpen] = useState(false);
@@ -98,6 +140,12 @@ const OffersPage = () => {
       image: "",
     });
   };
+  // Auto-fill store for store owners
+  useEffect(() => {
+    if (userRole === "store") {
+      setFormData((prev) => ({ ...prev, store: userStore }));
+    }
+  }, [userRole, userStore]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -265,7 +313,7 @@ const OffersPage = () => {
     toggleEditForm();
   };
   return (
-    <AdminLayout>
+    <StoreLayout>
       {isOpen && (
         <FormOffer
           handleSubmit={handleSubmit}
@@ -371,8 +419,8 @@ const OffersPage = () => {
           </table>
         </div>
       </div>
-    </AdminLayout>
+    </StoreLayout>
   );
 };
 
-export default OffersPage;
+export default Offers;

@@ -14,7 +14,7 @@
 import { io } from "socket.io-client";
 
 // Establish the WebSocket connection
-const socket = io("http://13.229.205.154:4000");
+const socket = io("http://localhost:4000");
 
 socket.on("connect", () => {
   console.log("Connected to WebSocket server", socket.id);

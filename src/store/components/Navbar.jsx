@@ -23,10 +23,10 @@ const NavbarStore = () => {
 
   const menuItems = [
     { name: "Home", path: "/store" },
-    { name: "Items", path: "" },
+    { name: "Items", path: "/store/items" },
     { name: "Chats", path: "/store/chats" },
     { name: "Orders", path: "/store/orders" },
-    { name: "Offers", path: "" },
+    { name: "Offers", path: "/store/offers" },
   ];
 
   return (
