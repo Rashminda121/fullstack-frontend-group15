@@ -17,7 +17,7 @@ import DashboardCard from "./components/DashboardCard";
 import AdminLayout from "./layout";
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/";
+  import.meta.env.VITE_BACKEND_URL || "http://13.229.205.154:4000/";
 
 const AdminPage = () => {
   const [dataList, setDataList] = useState([]);

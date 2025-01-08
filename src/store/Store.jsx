@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/";
+  import.meta.env.VITE_BACKEND_URL || "http://13.229.205.154:4000/";
 
 const StorePage = () => {
   const [dataList, setDataList] = useState([]);
@@ -30,12 +30,12 @@ const StorePage = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get("/api/store/dashboardCount", {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
-            token: token 
-          }
+            token: token,
+          },
         });
-        
+
         if (response.data.success) {
           setDataList(response.data.data);
         }
